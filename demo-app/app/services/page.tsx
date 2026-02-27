@@ -1,6 +1,6 @@
+"use client";
 import React from 'react';
 import Chart from '../client/Chart/Chart';
-import { start } from 'repl';
 
 // #region Sample data
 const data = [
@@ -53,7 +53,7 @@ const ServicePage: React.FC = () => {
         <div className="flex flex-col px-100 py-12">
             <h1>Services</h1>
             <p>Welcome to our application! We are dedicated to providing the best service possible.</p>
-            <Chart title="User Engagement" data={data} />
+            <Chart title="Charts" data={data} />
         </div>
     );
 };
