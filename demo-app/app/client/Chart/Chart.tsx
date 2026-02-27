@@ -105,14 +105,14 @@ export const Chart: React.FC<ChartProps> = ({ title = 'Chart', data = [] }) => {
                             bottom: 0,
                         }}
                     >
+                        <CartesianGrid strokeDasharray="2 3" />
                         <XAxis width="auto" type='auto' />
-                        <CartesianGrid strokeDasharray="3 3" />
                         <YAxis dataKey="name" type="category" />
                         <Tooltip active={true} />
                         <Legend />
-                        <Bar dataKey="started" fill="#8884d8" activeBar={{ fill: 'pink', stroke: 'blue' }} isAnimationActive={true} />
-                        <Bar dataKey="not started" fill="#82ca9d" activeBar={{ fill: 'gold', stroke: 'purple' }} isAnimationActive={true} />
-                        <Bar dataKey="completed" fill="#123a9d" activeBar={{ fill: 'red', stroke: 'yellow' }} isAnimationActive={true} />
+                        <Bar dataKey="started" fill="#8884d8" activeBar={true} label={{ position: 'right', fontSize: 10 }} />
+                        <Bar dataKey="not started" fill="#82ca9d" activeBar={true} label={{ position: 'right', fontSize: 10 }} />
+                        <Bar dataKey="completed" fill="#123a9d" activeBar={true} label={{ position: 'right', fontSize: 10 }} />
                     </BarChart>
                 </div>)}
             {showPieChart && (
