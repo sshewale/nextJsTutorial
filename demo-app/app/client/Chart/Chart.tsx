@@ -65,6 +65,39 @@ const PieGradient = (props: PieSectorShapeProps) => {
   );
 };
     
+const renderCustomizedLabel = (props) => {
+  const RADIAN = Math.PI / 180;
+  const { cx, cy, midAngle, outerRadius, fill, payload, percent } = props;
+  const sin = Math.sin(-RADIAN * midAngle);
+  const cos = Math.cos(-RADIAN * midAngle);
+  const delta = Math.abs(1 / cos) + 10;
+  const sx = cx + outerRadius * cos;
+  const sy = cy + outerRadius * sin;
+  const mx = cx + (outerRadius + delta) * cos;
+  const my = cy + (outerRadius + delta) * sin;
+  const ex = mx + Number(cos.toFixed(1)) * 20;
+  const ey = my;
+  const textAnchor = cos >= 0 ? "start" : "end";
+
+  return (
+    <g>
+      <path
+        d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`}
+        stroke={fill.replace(/[^,]+$/, '0.2)')}
+        fill="none"
+      />
+      <rect x={ex + (cos >= 0 ? 1 * 5 : -1 * 17)} y={ey - 4} width={12} height={8} fill={fill} />
+      <text
+        x={ex + (cos >= 0 ? 1 : -1) * 21}
+        y={ey + 4}
+        textAnchor={textAnchor}
+      >
+        {`${(percent * 100).toFixed(2)}%`}
+      </text>
+    </g>
+  );
+};
+
 export const Chart: React.FC<ChartProps> = ({ title = 'Chart', data = [] }) => {
     const [showBarChart, setShowBarChart] = useState(false);
     const [showPieChart, setShowPieChart] = useState(false);
@@ -100,7 +133,7 @@ export const Chart: React.FC<ChartProps> = ({ title = 'Chart', data = [] }) => {
                         layout="vertical"
                         margin={{
                             top: 50,
-                            right: 0,
+                            right: 50,
                             left: 0,
                             bottom: 0,
                         }}
@@ -110,16 +143,17 @@ export const Chart: React.FC<ChartProps> = ({ title = 'Chart', data = [] }) => {
                         <YAxis dataKey="name" type="category" />
                         <Tooltip active={true} />
                         <Legend />
-                        <Bar dataKey="started" fill="#8884d8" activeBar={true} label={{ position: 'right', fontSize: 10 }} />
-                        <Bar dataKey="not started" fill="#82ca9d" activeBar={true} label={{ position: 'right', fontSize: 10 }} />
-                        <Bar dataKey="completed" fill="#123a9d" activeBar={true} label={{ position: 'right', fontSize: 10 }} />
+                        <Bar barSize={10} dataKey="started" fill="#8884d8" activeBar={true} label={{ position: 'right', fontSize: 10 }} />
+                        <Bar barSize={10} dataKey="not started" fill="#82ca9d" activeBar={true} label={{ position: 'right', fontSize: 10 }} />
+                        <Bar barSize={10} dataKey="completed" fill="#123a9d" activeBar={true} label={{ position: 'right', fontSize: 10 }} />
                     </BarChart>
                 </div>)}
             {showPieChart && (
                 <div className="bg-gray-100 rounded-lg p-4">
                     <p>Pie Chart Placeholder</p>
                     <PieChart style={{ width: '100%', maxWidth: '500px', maxHeight: '80vh', aspectRatio: 1 }} responsive>
-                        <Pie data={pieChartdata} dataKey="x" isAnimationActive={true} shape={PieGradient} innerRadius="20%" />
+                        <Pie data={pieChartdata} dataKey="x" isAnimationActive={true} shape={PieGradient} innerRadius="20%" 
+                        labelLine={true} label={renderCustomizedLabel}/>
                         <Tooltip />
                     </PieChart>
                 </div>
